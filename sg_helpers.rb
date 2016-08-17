@@ -75,7 +75,7 @@ def sg_create(group_spec)
   update(group_spec)
 end
 
-# Create new security group
+# Update security group
 #
 # Parameters
 # * group_spec<Hash>
@@ -101,6 +101,45 @@ end
 #     * permission<Hash>
 def sg_update(group_spec)
   update(group_spec)
+end
+
+# Returns group spec for existing security group
+#
+# Parameters
+# * sg_id<String> - ID of security group
+# * vpc_id<String> - ID of the VPC
+# * region<String> - Region of security group
+
+# Returns
+# * group_spec<Hash>
+#   * 'group_name'<String> - Name of security group.
+#   * 'group_description'<String> - Description of security group.
+#   * 'vpc_id'<String> - ID of the VPC
+#   * 'region'<String> - Region of security group.
+#   * 'permissions'<Array>
+#     * permission<Hash>
+#       * 'ips'<Array>
+#         * ip<String>
+#       * 'from_port'<Integer> - Start of port range (-1 for ICMP wildcard)
+#       * 'to_port'<Integer> - End of port range (-1 for ICMP wildcard)
+#       * 'protocol'<String> - IP protocol, must be in ['tcp', 'udp', 'icmp']
+def sg_dump(sg_id, vpc_id, region)
+  ec2 = get_ec2(region)
+  group = ec2.describe_security_groups('group-id' => [sg_id]).body['securityGroupInfo'][0]
+
+  unless group
+    puts "Security group #{sg_id} does not exist"
+    return nil
+  end
+
+  group_spec = {'group_name' => group['groupName'],
+                'group_description' => group['groupDescription'],
+                'vpc_id' => vpc_id,
+                'region' => region,
+                'permissions' => []}
+  response = sg_audit(group_spec)
+  group_spec['permissions'] = response['del_perms']
+  group_spec
 end
 
 def add_perm(group_id, ec2, perm)
