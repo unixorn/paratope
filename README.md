@@ -5,15 +5,33 @@ config file.
 
 ## Installation
 
-Clone this repo or download ```sg_helpers.rb```.
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'paratope'
+```
+
+And then execute:
+
+	$ bundle
+
+Or install it yourself as:
+
+	$ gem install paratope
 
 ## Usage
 
-Require ```sg_helpers.rb``` in your application:
+Set AWS credentials:
+
+```bash
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Require paratope in your application:
 
 ```ruby
-require_relative './sg_helpers.rb'
+require 'paratope'
 ```
-(Your path may be different.)
 
 See ```sg_example``` for example usage.
