@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'paratope'
-  s.version     = '0.1.0'
+  s.version     = '0.1.1'
   s.date        = '2016-08-18'
   s.summary     = "Library to maintain AWS security groups"
   s.description = "Library to audit, create, or update AWS security groups "\
